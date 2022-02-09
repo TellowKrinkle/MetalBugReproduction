@@ -15,13 +15,23 @@ Implementation of the cross-platform view controller that displays Metal content
     AAPLMetalRenderer *_renderer;
 }
 
+static id<MTLDevice> FindIntelGPU()
+{
+    for (id<MTLDevice> dev in MTLCopyAllDevices()) {
+        if ([[dev name] containsString:@"Intel"])
+            return dev;
+    }
+    fprintf(stderr, "Could not find Intel GPU!");
+    abort();
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     // Set the view to use the default device.
     _view = (MTKView *)self.view;
-    _view.device = MTLCreateSystemDefaultDevice();
+    _view.device = FindIntelGPU();
 
     if(!_view.device)
     {

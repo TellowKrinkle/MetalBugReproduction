@@ -31,6 +31,14 @@ typedef struct
     half3  color;
 } TempleShaderInOut;
 
+struct DSBOut
+{
+    float4 color0 [[color(0), index(0)]];
+    float4 color1 [[color(0), index(1)]];
+
+    DSBOut(float4 color): color0(color.rgb, 1), color1(color.a) {}
+};
+
 vertex TempleShaderInOut
 templeTransformAndLightingShader(Vertex in [[stage_in]],
                                  constant float4x4      & mvpMatrix [[ buffer(AAPLBufferIndexMVPMatrix) ]],
@@ -67,7 +75,7 @@ templeTransformAndLightingShader(Vertex in [[stage_in]],
     return out;
 }
 
-fragment float4 templeSamplingFragmentShader(TempleShaderInOut in [[stage_in]],
+fragment DSBOut templeSamplingFragmentShader(TempleShaderInOut in [[stage_in]],
                                              constant AAPLFrameData & frameData [[ buffer(AAPLBufferIndexUniforms) ]],
                                              texture2d<half> baseColorMap [[ texture(AAPLTextureIndexBaseColor) ]])
 {
@@ -79,6 +87,8 @@ fragment float4 templeSamplingFragmentShader(TempleShaderInOut in [[stage_in]],
 
     half3 color = in.color * baseColorSample.xyz;
     half4 output = half4(color, baseColorSample.w);
+    if (all(in.position.xy == -1)) // Shader needs to have the ability to discard but doesn't actually need to discard
+        discard_fragment();
 
     // Return the calculated color. Use the alpha channel of `baseColorMap` to set the alpha value.
     return float4(output);
@@ -108,7 +118,7 @@ reflectionQuadTransformShader(const device AAPLQuadVertex * vertices [[buffer(AA
 }
 
 
-fragment float4
+fragment DSBOut
 reflectionQuadFragmentShader(QuadShaderInOut in [[stage_in]],
                              constant AAPLFrameData & frameData [[ buffer(AAPLBufferIndexUniforms) ]],
                              texture2d<float> reflectionMap [[ texture(AAPLTextureIndexBaseColor) ]])
