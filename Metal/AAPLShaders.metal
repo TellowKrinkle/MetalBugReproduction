@@ -68,6 +68,7 @@ templeTransformAndLightingShader(Vertex in [[stage_in]],
 }
 
 fragment float4 templeSamplingFragmentShader(TempleShaderInOut in [[stage_in]],
+                                             uint primid [[primitive_id]],
                                              constant AAPLFrameData & frameData [[ buffer(AAPLBufferIndexUniforms) ]],
                                              texture2d<half> baseColorMap [[ texture(AAPLTextureIndexBaseColor) ]])
 {
@@ -79,6 +80,8 @@ fragment float4 templeSamplingFragmentShader(TempleShaderInOut in [[stage_in]],
 
     half3 color = in.color * baseColorSample.xyz;
     half4 output = half4(color, baseColorSample.w);
+    if (primid == 0xFFFFFF) // Make sure the compiler doesn't optimize out primid usage
+        output = 0;
 
     // Return the calculated color. Use the alpha channel of `baseColorMap` to set the alpha value.
     return float4(output);
