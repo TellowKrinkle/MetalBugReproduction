@@ -1,10 +1,12 @@
-# Migrating OpenGL Code to Metal
+# Metal Bug Reproduction
 
-Replace your app's deprecated OpenGL code with Metal.
+A collection of known bugs in Metal backends and applications to reproduce those bugs
 
 ## Overview
 
-- Note: This sample code project is associated with WWDC 2019 session [611: Bringing OpenGL Apps to Metal](https://developer.apple.com/videos/play/wwdc2019/611/).
+This code is based on the Bringing OpenGL Apps to Metal sample code because it was easy to throw bug reproductions into
+
+Check out the tags / releases for actual bugs
 
 ## Configure the Sample Code Project
 
