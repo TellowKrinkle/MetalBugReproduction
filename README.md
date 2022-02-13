@@ -1,10 +1,12 @@
-# Migrating OpenGL Code to Metal
+# Broken Depth Write
 
-Replace your app's deprecated OpenGL code with Metal.
+Shaders that output to the dual source blend outputs (but don't use dual source blend) that also use fragment discard don't properly write depth
 
-## Overview
+## Known Broken GPUs
 
-- Note: This sample code project is associated with WWDC 2019 session [611: Bringing OpenGL Apps to Metal](https://developer.apple.com/videos/play/wwdc2019/611/).
+Intel GPUs from Broadwell onwards seem to be affected
+
+Please file an issue if you find an affected pre-Broadwell GPU or a non-affected Broadwell+ GPU
 
 ## Configure the Sample Code Project
 
