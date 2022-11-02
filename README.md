@@ -6,6 +6,8 @@ The shader compiler mistakenly optimizes `uchar(floatval) & 0x80` to `char(float
 
 Intel GPUs from Broadwell onwards seem to be affected
 
+Fixed in macOS 13.0 Ventura
+
 Please file an issue if you find an affected pre-Broadwell GPU or a non-affected Broadwell+ GPU
 
 ## Running
