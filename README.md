@@ -6,6 +6,8 @@ Shaders with Primitive ID enabled don't interpolate inputs properly
 
 Intel GPUs from Broadwell onwards seem to be affected
 
+Fixed in macOS 13.0 Ventura
+
 Please file an issue if you find an affected pre-Broadwell GPU or a non-affected Broadwell+ GPU
 
 ## Configure the Sample Code Project
