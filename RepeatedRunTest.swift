@@ -1,9 +1,13 @@
 import Metal
 import MetalKit
 
-let dir = URL(fileURLWithPath: CommandLine.arguments[0]).deletingLastPathComponent().path
-let resdir = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "\(dir)/Res"
-let count = CommandLine.arguments.count > 1 ? Int(CommandLine.arguments[1])! : 100000
+var args = CommandLine.arguments
+let enableMips = args.contains("nomips") ? false : true
+args.removeAll(where: { $0 == "nomips" })
+
+let dir = URL(fileURLWithPath: args[0]).deletingLastPathComponent().path
+let resdir = args.count > 2 ? args[2] : "\(dir)/Res"
+let count = args.count > 1 ? Int(args[1])! : 100000
 
 let vertices = try Data(contentsOf: URL(fileURLWithPath: "\(resdir)/Vertices.hex"))
 let indices = try Data(contentsOf: URL(fileURLWithPath: "\(resdir)/Indices.hex"))
@@ -793,14 +797,18 @@ extension MTKTextureLoader {
 		let bases = try urls.map { try newTexture(URL: $0, options: [.SRGB: false]) }
 		let mip0 = bases.max(by: { $0.width < $1.width })!
 		let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: mip0.pixelFormat, width: mip0.width, height: mip0.height, mipmapped: urls.count > 1)
-		desc.mipmapLevelCount = urls.count
+		desc.mipmapLevelCount = enableMips ? urls.count : 1
 		desc.usage = .shaderRead
 		desc.storageMode = .private
 		desc.textureType = .type2DArray
 		let tex = device.makeTexture(descriptor: desc)!
 		let cbuf = q.makeCommandBuffer()!
 		let blit = cbuf.makeBlitCommandEncoder()!
-		for base in bases { blit.copy(from: base, to: tex) }
+		if enableMips {
+			for base in bases { blit.copy(from: base, to: tex) }
+		} else {
+			blit.copy(from: mip0, to: tex)
+		}
 		blit.endEncoding()
 		cbuf.commit()
 		return tex
