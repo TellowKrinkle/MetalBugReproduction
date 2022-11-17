@@ -1,12 +1,12 @@
-# Metal Bug Reproduction
+# Broken Discard with Early Depth
 
-A collection of known bugs in Metal backends and applications to reproduce those bugs
+Shaders with early depth tests that can also discard end up discarding regardless of whether they actually executed the discard or not
 
-## Overview
+## Known Broken GPUs
 
-This code is based on the Bringing OpenGL Apps to Metal sample code because it was easy to throw bug reproductions into
+All Apple GPUs seem to be affected
 
-Check out the tags / releases for actual bugs
+Please file an issue if you find an affected non-Apple GPU or a non-affected Apple GPU
 
 ## Configure the Sample Code Project
 
