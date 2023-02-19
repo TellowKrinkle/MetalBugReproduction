@@ -456,6 +456,7 @@ Implementation of the renderer class that performs OpenGL state setup and per-fr
     glBindFramebuffer(GL_FRAMEBUFFER, _reflectionFBO);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, AAPLReflectionSize.x, AAPLReflectionSize.y);
+    glDepthRange(1, 0);
     // Use the program that renders the temple.
     glUseProgram(_templeProgram);
 

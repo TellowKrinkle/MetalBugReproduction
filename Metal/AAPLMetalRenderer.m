@@ -537,6 +537,14 @@ static const NSUInteger AAPLMaxBuffersInFlight = 3;
         id<MTLRenderCommandEncoder> renderEncoder =
             [commandBuffer renderCommandEncoderWithDescriptor:drawableRenderPassDescriptor];
         renderEncoder.label = @"Drawable Render Encoder";
+        id<MTLTexture> tex = drawableRenderPassDescriptor.colorAttachments[0].texture;
+        MTLSize size = MTLSizeMake(tex.width, tex.height, tex.depth);
+        MTLViewport viewport = {
+            .originX = 0,          .originY = 0,
+            .width   = size.width, .height  = size.height,
+            .znear   = 1,          .zfar    = 0,
+        };
+        [renderEncoder setViewport:viewport];
 
         // Set the render pipeline state.
         //  [renderEncoder setCullMode:MTLCullModeBack];

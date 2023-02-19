@@ -41,6 +41,7 @@ templeTransformAndLightingShader(Vertex in [[stage_in]],
     // Make `in.position` a `float4` to perform 4x4 matrix math on it. Then calculate the position of
     // the vertex in clip space and output the value for clipping and rasterization.
     out.position = mvpMatrix * float4(in.position, 1.0);
+    out.position.z = out.position.w - out.position.z;
 
     // Pass along the texture coordinate of the vertex for the fragment shader to use to sample from
     // the texture.
@@ -100,6 +101,7 @@ reflectionQuadTransformShader(const device AAPLQuadVertex * vertices [[buffer(AA
 
     // Transform by the quad's model-view-projection matrix.
     out.position = mvpMatrix * vertices[vertexIndex].position;
+    out.position.z = out.position.w - out.position.z;
 
     // Pass the texture coordinate.
     out.texCoord = vertices[vertexIndex].texcoord;

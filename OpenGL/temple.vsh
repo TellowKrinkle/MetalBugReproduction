@@ -47,6 +47,7 @@ void main (void)
     // Calculate the position of the vertex in clip space and output the value for clipping
     // and rasterization.
     gl_Position = modelViewProjectionMatrix * inPosition;
+    gl_Position.z = -gl_Position.z;
 
     // Pass along the texture coordinate of the vertex for the fragment shader to use to
     // sample from the texture.
