@@ -1,10 +1,12 @@
-# Migrating OpenGL Code to Metal
+# Broken Reversed Depth
 
-Replace your app's deprecated OpenGL code with Metal.
+Inverting the viewport's zNear and zFar (zNear=1 zFar=0) doesn't work.  This feature is used by Dolphin.
 
-## Overview
+## Known Broken GPUs
 
-- Note: This sample code project is associated with WWDC 2019 session [611: Bringing OpenGL Apps to Metal](https://developer.apple.com/videos/play/wwdc2019/611/).
+AMD GPUs seem to be affected
+
+Please file an issue if you find an affected non-AMD GPU or a non-affected AMD GPU
 
 ## Configure the Sample Code Project
 
